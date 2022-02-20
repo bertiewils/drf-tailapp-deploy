@@ -1,0 +1,14 @@
+---
+# Dynamic inventory to retrieve EC2 VMs
+
+plugin: amazon.aws.aws_ec2
+regions:
+  - eu-west-2
+filters:
+  instance-state-name: running
+keyed_groups:
+  # Create a group for each value of the Application tag
+  - key: tags.Type
+    separator: ''
+compose:
+  ansible_host: public_dns_name

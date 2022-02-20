@@ -1,0 +1,13 @@
+
+# General
+user: admin
+
+# App
+app_image: public.ecr.aws/j3n5d8i7/drf-tailapp
+app_version: latest
+
+# RDS
+database_name: "{{ vault_database_name }}"
+database_user: "{{ vault_database_user }}"
+database_password: "{{ vault_database_password }}"
+database_host: "{{ vault_database_host }}"

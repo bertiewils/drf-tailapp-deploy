@@ -1,0 +1,6 @@
+---
+# Ansible requirements
+
+collections:
+  - name: community.general  # To deploy Docker container
+  - name: amazon.aws  # for AWS dynamic inventory

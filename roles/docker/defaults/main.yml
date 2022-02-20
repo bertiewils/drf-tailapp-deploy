@@ -1,0 +1,4 @@
+---
+
+install_compose: true
+compose_version: latest

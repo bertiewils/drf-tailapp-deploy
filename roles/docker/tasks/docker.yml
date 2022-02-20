@@ -1,0 +1,63 @@
+---
+- name: Docker | Install dependencies
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg-agent
+    - lsb-release
+    - software-properties-common
+    - python3-pip
+
+- name: Docker | Ensure docker-py library is absent
+  ansible.builtin.pip:
+    name: docker-py
+    state: absent
+
+- name: Docker | Ensure docker library is present
+  ansible.builtin.pip:
+    name: docker
+    state: present
+
+- name: Docker | Add GPG key
+  ansible.builtin.apt_key:
+    url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+    state: present
+
+- name: Docker | Add apt repository
+  ansible.builtin.apt_repository:
+    repo: "deb https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+    state: present
+
+- name: Docker | Install docker
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+
+- name: Docker | Ensure Docker is started
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Docker | Ensure docker group exists
+  ansible.builtin.group:
+    name: docker
+    state: present
+
+- name: Docker | Add users to group
+  ansible.builtin.user:
+    name: "{{ item }}"
+    groups: docker
+    append: yes
+  with_items:
+    - "{{ user }}"

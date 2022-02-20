@@ -1,0 +1,51 @@
+---
+
+- name: Deploy drf-tailapp
+  hosts: apphost
+  remote_user: "{{ user | default(ansible_username) }}"
+
+  tasks:
+    - name: Install requirements
+      import_role:
+        name: docker
+      tags: docker
+
+    - name: Deploy app container
+      community.general.docker_container:
+        name: drf-tailapp
+        image: "{{ app_image }}:{{ app_version }}"
+        state: started
+        pull: yes
+        hostname: drf-tailapp
+        container_default_behavior: compatibility
+        network_mode: default
+        published_ports:
+          - "80:8000"
+        restart_policy: unless-stopped
+        networks_cli_compatible: yes
+        env:
+          DATABASE_NAME: "{{ database_name }}"
+          DATABASE_USER: "{{ database_user }}"
+          DATABASE_PASSWORD: "{{ database_password }}"
+          DATABASE_HOST: "{{ database_host }}"
+      tags: app
+
+    - name: Retrieve health endpoint
+      ansible.builtin.uri:
+        url: "http://{{ ansible_host }}/health/?format=json"
+        method: GET
+        return_content: yes
+        status_code: 200
+        body_format: json
+      delegate_to: localhost
+      changed_when: false
+      register: health_check
+
+    - name: Assert app health
+      ansible.builtin.assert:
+        that:
+          - "'OK' in health_check.json.status"
+
+    - name: Display URL
+      ansible.builtin.debug:
+        msg: "The APi is accessible at http://{{ ansible_host }}/api/v1/"
