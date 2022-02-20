@@ -75,9 +75,8 @@ Going forward, I'd like:
 
 - more EC2 configuration, both hardware resources and OS
 - better secret management; something like Hashicorp Vault that both programs can read from
-- more restrictive networking; for GH Actions to run the tests I had to open the DB up to the world, instead of just the EC2 IPs. EC2 SSH access is also wide open
+- more restrictive networking; for GH Actions to run the tests I had to open the DB up to the world, instead of just the EC2 IPs. EC2 SSH access could also be more locked-down
 - a pipeline to run the `terraform apply`/playbook on changes being push, subject to peer reviews
 - HTTPS for the API/web interface
 - some DNS/a domain name for a nicer URL
 - some monitoring for the hosts and API
-
