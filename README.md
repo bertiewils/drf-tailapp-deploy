@@ -25,7 +25,7 @@ ansible-playbook deploy.yml  # Configure the EC2 instance(s)
 
 ## Result
 
-The app is available at [http://apphost-elb-854628697.eu-west-2.elb.amazonaws.com/api/v1/](http://apphost-elb-854628697.eu-west-2.elb.amazonaws.com/api/v1/) using the default credentials.
+~~The app is available at [http://apphost-elb-854628697.eu-west-2.elb.amazonaws.com/api/v1/](http://apphost-elb-854628697.eu-west-2.elb.amazonaws.com/api/v1/) using the default credentials.~~
 
 ---
 ---
